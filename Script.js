@@ -60,11 +60,11 @@ $(document).ready(function () {
       // Get registered user
       let storedUser = JSON.parse(sessionStorage.getItem("registeredUser"));
 
-      // Default static account (admin/12345) + registered user
+      // Allow static account (admin/12345) OR registered user
       if ((username === "admin" && password === "12345") ||
           (storedUser && username === storedUser.username && password === storedUser.password)) {
         sessionStorage.setItem("username", username);
-        window.location.href = "landing.html";
+        window.location.href = "landing.html"; // ✅ redirect works
       } else {
         alert("Invalid login. Try again.");
       }
