@@ -1,0 +1,11 @@
+.btn-blush {
+  background-color: #f4c2c2; /* blush pink */
+  border: none;
+  color: white;
+  font-weight: bold;
+}
+
+.btn-blush:hover {
+  background-color: #f28ca4; /* darker pink on hover */
+  color: white;
+}
