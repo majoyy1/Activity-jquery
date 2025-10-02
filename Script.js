@@ -1,64 +1,49 @@
-// ---------------- REGISTER VALIDATION ----------------
-$("#registerForm").validate({
-  rules: {
-    regUsername: "required",
-    regPassword: "required",
-    confirmPassword: {
-      equalTo: "[name='regPassword']"
+$(document).ready(function() {
+
+  // ---------------- REGISTER ----------------
+  $("#registerForm").submit(function(e) {
+    e.preventDefault(); // stop refresh
+
+    let username = $("[name='regUsername']").val();
+    let password = $("[name='regPassword']").val();
+    let confirmPassword = $("[name='confirmPassword']").val();
+
+    if (username === "" || password === "" || confirmPassword === "") {
+      alert("All fields are required!");
+      return;
     }
-  },
-  messages: {
-    regUsername: "Enter username",
-    regPassword: "Enter password",
-    confirmPassword: "Passwords must match"
-  },
-  submitHandler: function(form, event) {
-    event.preventDefault(); // stop refresh
 
-    let newUser = {
-      username: $("[name='regUsername']").val(),
-      password: $("[name='regPassword']").val()
-    };
+    if (password !== confirmPassword) {
+      alert("Passwords do not match!");
+      return;
+    }
 
-    // Save to sessionStorage
+    // save account to sessionStorage
+    let newUser = { username: username, password: password };
     sessionStorage.setItem("registeredUser", JSON.stringify(newUser));
 
     alert("Registration successful! You can now login.");
-    window.location.href = "index.html"; // back to login page
-  }
-});
+    window.location.href = "index.html";
+  });
 
 
-// ---------------- LOGIN VALIDATION ----------------
-$("#loginForm").validate({
-  rules: {
-    username: "required",
-    password: "required"
-  },
-  messages: {
-    username: "Enter your username",
-    password: "Enter your password"
-  },
-  submitHandler: function(form, event) {
-    event.preventDefault(); // stop refresh
+  // ---------------- LOGIN ----------------
+  $("#loginForm").submit(function(e) {
+    e.preventDefault(); // stop refresh
 
-    let username = $("[name='username']").val();
-    let password = $("[name='password']").val();
-
-    // Get registered account (if any)
+    let username = $("[name='loginUsername']").val();
+    let password = $("[name='loginPassword']").val();
     let storedUser = JSON.parse(sessionStorage.getItem("registeredUser"));
 
-    // Check credentials: static admin or registered account
+    // check static admin account OR registered account
     if ((username === "admin" && password === "12345") ||
         (storedUser && username === storedUser.username && password === storedUser.password)) {
-      
-      // Save active session
-      sessionStorage.setItem("username", username);
 
-      // Redirect to landing page
-      window.location.href = "landing.html";
+      sessionStorage.setItem("username", username); // save active session
+      window.location.href = "landing.html"; // redirect
     } else {
       alert("Invalid login. Try again.");
     }
-  }
+  });
+
 });
