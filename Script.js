@@ -1,7 +1,8 @@
 $(document).ready(function () {
-  // Register form validation
+  // Registration Validation
   $("#registerForm").validate({
     rules: {
+      username: "required",
       name: "required",
       email: {
         required: true,
@@ -17,7 +18,8 @@ $(document).ready(function () {
       }
     },
     messages: {
-      name: "Please enter your name",
+      username: "Enter a username",
+      name: "Enter your full name",
       email: "Enter a valid email address",
       password: {
         required: "Enter a password",
@@ -29,12 +31,19 @@ $(document).ready(function () {
       }
     },
     submitHandler: function (form) {
-      alert("Registration successful!");
+      // Save registered user to sessionStorage
+      let userData = {
+        username: $("[name='username']").val(),
+        password: $("[name='password']").val()
+      };
+      sessionStorage.setItem("registeredUser", JSON.stringify(userData));
+
+      alert("Registration successful! You can now login.");
       window.location.href = "index.html";
     }
   });
 
-  // Login form validation
+  // Login Validation
   $("#loginForm").validate({
     rules: {
       username: "required",
@@ -48,12 +57,16 @@ $(document).ready(function () {
       let username = $("[name='username']").val();
       let password = $("[name='password']").val();
 
-      // Static credentials: admin / 12345
-      if (username === "admin" && password === "12345") {
+      // Get registered user
+      let storedUser = JSON.parse(sessionStorage.getItem("registeredUser"));
+
+      // Default static account (admin/12345) + registered user
+      if ((username === "admin" && password === "12345") ||
+          (storedUser && username === storedUser.username && password === storedUser.password)) {
         sessionStorage.setItem("username", username);
         window.location.href = "landing.html";
       } else {
-        alert("Invalid login. Try admin / 12345.");
+        alert("Invalid login. Try again.");
       }
     }
   });
