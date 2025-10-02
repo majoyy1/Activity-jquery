@@ -15,7 +15,7 @@
   <script>
     let user = sessionStorage.getItem("username");
     if (!user) {
-      window.location.href = "index.html"; // block access kung walang login
+      window.location.href = "index.html"; 
     } else {
       document.getElementById("welcomeMessage").innerText = "Welcome, " + user + "!";
     }
