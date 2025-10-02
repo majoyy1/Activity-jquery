@@ -9,16 +9,23 @@
 <body class="bg-light">
   <div class="container text-center mt-5">
     <h2 id="welcomeMessage"></h2>
-    <a href="index.html" class="btn btn-blush mt-3">Logout</a>
+    <a href="index.html" class="btn btn-blush mt-3" onclick="logout()">Logout</a>
   </div>
 
   <script>
-    // Display username from sessionStorage
+    // Show welcome message if logged in
     let user = sessionStorage.getItem("username");
+
     if (!user) {
-      window.location.href = "index.html"; // redirect if not logged in
+      // If not logged in, redirect to login
+      window.location.href = "index.html";
     } else {
       document.getElementById("welcomeMessage").innerText = "Welcome, " + user + "!";
+    }
+
+    // Logout function
+    function logout() {
+      sessionStorage.removeItem("username");
     }
   </script>
 </body>
